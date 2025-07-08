@@ -1,17 +1,9 @@
-"""
-Contient : 
-- Fonction qui donne le prix avec le modèle de Heston (formule fermée)
-- Code qui peremt de réalsier le tracé pour différents spots
-
-"""
-
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 
 i = complex(0, 1)
 
+#pricing de l'option en utilisant le modèle de Heston
 def fHeston(s, St, K, r, T, sigma, kappa, theta, volvol, rho):
     prod = rho * sigma * i * s
     d = np.sqrt((prod - kappa)**2 + (sigma**2) * (i * s + s**2))
@@ -31,7 +23,7 @@ def fHeston(s, St, K, r, T, sigma, kappa, theta, volvol, rho):
     
     return mainExp1 * mainExp2
 
-def priceHestonMid(St, K, r, T, sigma, kappa, theta, volvol, rho):
+def call_priceHestonMid(St, K, r, T, sigma, kappa, theta, volvol, rho):
     P, iterations, maxNumber = 0, 1000, 100
     ds = maxNumber / iterations
     element1 = 0.5 * (St - K * np.exp(-r * T))
@@ -51,30 +43,62 @@ def priceHestonMid(St, K, r, T, sigma, kappa, theta, volvol, rho):
     return np.real(element1 + element2)
 
 
-# Paramètres Heston fixes
-r = 0.01
-T = 1.0
-sigma = 0.3
-kappa = 2.0
-theta = 0.04
-volvol = 0.3
-rho = -0.7
-K = 100  # Strike fixé
+def put_priceHeston(St, K, r, T, sigma, kappa, theta, volvol, rho):
 
-# Faire varier le spot autour de 60 à 140 par exemple
-spot_range = np.linspace(60, 140, 30)
-prices = [priceHestonMid(S, K, r, T, sigma, kappa, theta, volvol, rho) for S in spot_range]
+    # On utilise la put call parity
+    put = call_priceHestonMid(St, K, r, T, sigma, kappa, theta, volvol, rho) - St + K*np.exp(-r*T)
 
-# Tracé
-plt.plot(spot_range, prices, marker='o')
-plt.xlabel('Spot S')
-plt.ylabel('Prix Call Heston')
-plt.title(f'Prix Call Heston en fonction du Spot (Strike={K})')
-plt.grid(True)
-plt.show()
+    return put 
 
 
-## faire graphe qui montre si on retrouve un skew ou smile de vol 
+#Permet de tracer pour différents spot le prix de l'option
+def trace_call_Heston():
+    # Paramètres Heston fixes
+    r = 0.01
+    T = 1.0
+    sigma = 0.3
+    kappa = 2.0
+    theta = 0.04
+    volvol = 0.3
+    rho = -0.7
+    K = 100  # Strike fixé
 
-def graph_des_grecques():
-    return 0 
+    # Faire varier le spot autour de 60 à 140 par exemple
+    spot_range = np.linspace(60, 140, 30)
+
+    prices_call = [call_priceHestonMid(S, K, r, T, sigma, kappa, theta, volvol, rho) for S in spot_range]
+
+    plt.plot(spot_range, prices_call, label='Call Heston', color='green')
+    plt.xlabel('Spot S')
+    plt.ylabel('Prix')
+    plt.legend()
+    plt.show()
+
+
+def trace_put_heston():
+    # Paramètres Heston fixes
+    r = 0.01
+    T = 1.0
+    sigma = 0.3
+    kappa = 2.0
+    theta = 0.04
+    volvol = 0.3
+    rho = -0.7
+    K = 100  # Strike fixé
+
+    # Faire varier le spot autour de 60 à 140 par exemple
+    spot_range = np.linspace(60, 140, 30)
+
+    prices_put = [put_priceHeston(S, K, r, T, sigma, kappa, theta, volvol, rho) for S in spot_range]
+
+    plt.plot(spot_range, prices_put, label='Put Heston', color='green')
+    plt.xlabel('Spot S')
+    plt.ylabel('Prix')
+    plt.legend()
+    plt.show()
+    return 0
+    
+
+trace_call_Heston()
+trace_put_heston()
+
