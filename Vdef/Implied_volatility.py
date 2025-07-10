@@ -12,7 +12,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 from scipy.optimize import brentq
-import Heston_fonctionne as hf # Permet d'utiliser la fonction de pricing de Heston
+import Heston_pricer as hf # Permet d'utiliser la fonction de pricing de Heston
 
 
 # Renvoie le prix dans le cadre du modèle de Black Scholes

@@ -6,7 +6,7 @@ Ce fichier contient  :
 
 import numpy as np
 import matplotlib.pyplot as plt
-import Heston_fonctionne as hf # type: ignore # Permet d'utiliser la fonction de pricing de Heston
+import Heston_pricer as hf # type: ignore # Permet d'utiliser la fonction de pricing de Heston
 
 def trace_impact_parametres():
     # Paramètres de base
