@@ -104,5 +104,5 @@ def trace_put_heston():
     return 0
     
 
-#trace_call_Heston()
-#trace_put_heston()
+trace_call_Heston()
+trace_put_heston()

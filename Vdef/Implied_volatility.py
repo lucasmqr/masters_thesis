@@ -22,8 +22,8 @@ def black_scholes_call_price(S, K, T, r, sigma):
     return S*norm.cdf(d1) - K*np.exp(-r*T)*norm.cdf(d2)
 
 # def black_scholes_put_price(S, K, T, r, sigma):
-    put_bs= black_scholes_call_price(S, K, T, r, sigma)-S+K*np.exp(-r*T)
-    return put_bs
+#     put_bs= black_scholes_call_price(S, K, T, r, sigma)-S+K*np.exp(-r*T)
+#     return put_bs
 
 # Permet de récupérer la "volatilité implicite équivalente qu'on obtient avec le modèle de Heston"
 def call_implied_volatility_mc(price, S, K, T, r):
@@ -92,11 +92,11 @@ def graph_smile():
     r = 0.03
     T = 1.0
 
-    sigma = 0.3
-    kappa = 1.5
-    theta = 0.01
-    volvol = 0.04
-    rho = -0.5
+    sigma = 0.7848
+    kappa = 0.7253
+    theta = 0.1084
+    volvol = 0.0299
+    rho = -0.7784
 
     #put_strikes = np.linspace(60, 140, 30)
     call_strikes = np.linspace(60, 140, 30)
